@@ -66,56 +66,17 @@ AWS_DEFAULT_REGION=your_aws_region
 S3_BUCKET_NAME=your_s3_bucket_name
 ```
 
-## Creating a Pipeline
+## Creating the Pipeline
 
-1. Create a new pipeline:
+1. In your Mage AI project directory, create a new pipeline:
 
 ```bash
 mage add pipeline million_song_pipeline
 ```
 
-2. Edit the `pipelines/million_song_pipeline.py` file to define your data processing and model training steps:
+2. Replace the content of the generated pipeline file with the code from `src/mage_ai_pipelines/million_song_pipeline.py`.
 
-```python
-from mage_ai.data_preparation.decorators import data_loader, transformer
-from mage_ai.data_preparation.shared.secrets import get_secret_value
-import pandas as pd
-from src.data.load_data import prepare_data
-from src.models.train_model import train_model
-
-@data_loader
-def load_data(*args, **kwargs):
-    """
-    Load data from S3
-    """
-    bucket_name = get_secret_value('S3_BUCKET_NAME')
-    return prepare_data(bucket_name=bucket_name)
-
-@transformer
-def train_and_evaluate_model(data, *args, **kwargs):
-    """
-    Train and evaluate the model
-    """
-    X, y, feature_names = data
-    run_id = train_model(X, y, feature_names)
-    return run_id
-
-@transformer
-def save_model_info(run_id, *args, **kwargs):
-    """
-    Save model info to S3
-    """
-    bucket_name = get_secret_value('S3_BUCKET_NAME')
-    s3_client = boto3.client('s3')
-    s3_client.put_object(
-        Bucket=bucket_name,
-        Key=f'models/{run_id}/info.json',
-        Body=json.dumps({'run_id': run_id})
-    )
-    return f"Model info saved for run {run_id}"
-```
-
-## Running a Pipeline
+## Running the Pipeline
 
 To run the pipeline:
 
@@ -123,7 +84,7 @@ To run the pipeline:
 mage run million_song_pipeline
 ```
 
-## Scheduling Pipelines
+## Scheduling the Pipeline
 
 1. Create a schedule for your pipeline in the `schedules/million_song_schedule.py` file:
 
@@ -141,6 +102,20 @@ trigger = TimeTrigger(
 ```bash
 mage schedule enable million_song_schedule
 ```
+
+This setup integrates Mage AI into your existing project structure:
+
+1. It uses your existing data loading, model training, and prediction functions.
+2. It creates a Mage AI pipeline that orchestrates the entire process from data loading to saving recommendations.
+3. It allows for easy scheduling of the pipeline.
+
+To use this setup:
+
+1. Ensure Mage AI is installed and configured in your project environment.
+2. Copy the `million_song_pipeline.py` file to your Mage AI pipelines directory.
+3. Update your `config.json` to include all necessary S3 bucket and file key information.
+4. Use the Mage AI CLI commands to run and schedule the pipeline as described in the updated `mage_ai.md` file.
+
 
 ## Best Practices
 
@@ -171,3 +146,4 @@ mage schedule enable million_song_schedule
    - Consider using Mage AI's distributed execution capabilities for large-scale processing.
 
 For more information, consult the [Mage AI documentation](https://docs.mage.ai/) or reach out to your DevOps team.
+

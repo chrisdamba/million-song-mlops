@@ -155,8 +155,7 @@ terraform destroy
 ## Troubleshooting
 
 1. **State Mismatch**: If Terraform state doesn't match reality, use `terraform refresh` cautiously.
-2. **Provider Issues**: Ensure you're using compatible provider versions. Check `versions.tf`.
-3. **Permissions**: Verify that your AWS credentials have necessary permissions for all operations.
-4. **Dependency Errors**: Check for circular dependencies in your Terraform code.
+2. **Permissions**: Verify that your AWS credentials have necessary permissions for all operations.
+3. **Dependency Errors**: Check for circular dependencies in your Terraform code.
 
 For more information, consult the [Terraform documentation](https://www.terraform.io/docs/index.html) or seek assistance from your DevOps team.

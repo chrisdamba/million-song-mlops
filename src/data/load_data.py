@@ -1,17 +1,15 @@
 import json
 import os
 from io import BytesIO
-from typing import Tuple, List
+from typing import Tuple, List, Any
 
 import boto3
 import h5py
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-
-
-with open('config.json', 'r') as f:
-    config = json.load(f)
+from pandas import Series, DataFrame
+from pandas.core.generic import NDFrame
 
 
 def extract_song_data(h5_file):
@@ -101,7 +99,7 @@ def load_data_from_s3(file_key: str) -> pd.DataFrame:
     return pq.read_table(parquet_file).to_pandas()
 
 
-def prepare_data(local_data_path: str = None) -> Tuple[pd.DataFrame, pd.Series, List[str]]:
+def prepare_data(local_data_path: str = None) -> tuple[Any, Any, list[Any], Any]:
     """Prepare the dataset for machine learning."""
     if local_data_path and os.path.exists(local_data_path):
         print(f"Loading data from local Parquet file: {local_data_path}")
@@ -131,14 +129,21 @@ def prepare_data(local_data_path: str = None) -> Tuple[pd.DataFrame, pd.Series, 
     X = df[features]
     y = df[target]
 
-    return X, y, features
+    # Calculate song popularity
+    song_popularity = df.groupby('song_id').size().sort_values(ascending=False)
+    popular_songs = song_popularity.index.tolist()
+
+    return X, y, features, popular_songs
 
 
 if __name__ == "__main__":
     # Example usage
-    local_data_path = "MillionSongSubset/data"
-    X, y, feature_names = prepare_data(local_data_path)
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+
+    X, y, feature_names, popular_songs = prepare_data(config['prepared_data_key'])
     print(f"Loaded {len(X)} samples with {len(feature_names)} features")
+    print(f"Top 10 popular songs: {popular_songs[:10]}")
     print("Feature names:", feature_names)
     print("X shape:", X.shape)
     print("y shape:", y.shape)
