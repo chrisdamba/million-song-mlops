@@ -109,14 +109,6 @@ This setup integrates Mage AI into your existing project structure:
 2. It creates a Mage AI pipeline that orchestrates the entire process from data loading to saving recommendations.
 3. It allows for easy scheduling of the pipeline.
 
-To use this setup:
-
-1. Ensure Mage AI is installed and configured in your project environment.
-2. Copy the `million_song_pipeline.py` file to your Mage AI pipelines directory.
-3. Update your `config.json` to include all necessary S3 bucket and file key information.
-4. Use the Mage AI CLI commands to run and schedule the pipeline as described in the updated `mage_ai.md` file.
-
-
 ## Best Practices
 
 1. **Modular Design**: Break down your pipeline into reusable components.
