@@ -91,10 +91,10 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def load_data_from_s3(file_key: str) -> pd.DataFrame:
+def load_data_from_s3(file_key: str, bucket_name: str) -> pd.DataFrame:
     """Load a Parquet file from S3 and return as a pandas DataFrame."""
     s3 = boto3.client('s3')
-    obj = s3.get_object(Bucket=config['s3_bucket_name'], Key=file_key)
+    obj = s3.get_object(Bucket=bucket_name, Key=file_key)
     parquet_file = BytesIO(obj['Body'].read())
     return pq.read_table(parquet_file).to_pandas()
 
@@ -106,7 +106,7 @@ def prepare_data(local_data_path: str = None) -> tuple[Any, Any, list[Any], Any]
         df = pq.read_table(local_data_path).to_pandas()
     else:
         print(f"Processing raw dataset from: {config['raw_data_key']}")
-        df = load_data_from_s3(config['raw_data_key'])
+        df = load_data_from_s3(config['raw_data_key'], config['s3_bucket_name'])
         df = clean_data(df)
         df = engineer_features(df)
 

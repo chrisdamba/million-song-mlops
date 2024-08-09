@@ -6,7 +6,8 @@ import mlflow.sklearn
 import pandas as pd
 import boto3
 
-from src.data.load_data import load_data_from_s3
+from src.data.load_data import load_data_from_s3, prepare_data
+from src.models.train_model import train_model
 
 
 def load_model(run_id, config):
@@ -41,12 +42,13 @@ def main():
     with open('config.json', 'r') as f:
         config = json.load(f)
 
-    # Load the model from MLflow
-    run_id = "your_mlflow_run_id"  # Replace with actual run ID
+    X, y, feature_names, popular_songs = prepare_data(config['prepared_data_key'])
+    run_id = train_model(X, y, feature_names, popular_songs)
+
     model = load_model(run_id, config)
 
     # Load new data for predictions
-    X_new = load_data_from_s3(config['prepared_data_key'])
+    X_new = load_data_from_s3(config['prepared_data_key'], config['s3_bucket_name'])
 
     # Ensure the new data has the same features as the training data
     required_features = model.feature_names_in_

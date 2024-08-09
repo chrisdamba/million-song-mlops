@@ -222,6 +222,28 @@ The project uses GitHub Actions for CI/CD. On every push to the main branch:
 
 You can view the status of these workflows in the "Actions" tab of the GitHub repository.
 
+## Development
+
+This project uses [pre-commit](https://pre-commit.com/) to enforce coding standards and catch common issues before they are committed.
+
+To set up pre-commit:
+
+1. Install pre-commit:
+   ```
+   pip install pre-commit
+   ```
+
+2. Set up the git hooks:
+   ```
+   pre-commit install
+   ```
+
+Now, pre-commit will run automatically on `git commit`.
+
+To run pre-commit manually on all files:
+   ```
+   pre-commit run --all-files
+   ```
 
 
 ## Acknowledgements
@@ -229,4 +251,3 @@ You can view the status of these workflows in the "Actions" tab of the GitHub re
 - [Million Song Dataset](http://millionsongdataset.com) for providing the data
 - [DataTalks.Club](https://datatalks.club) for inspiration and learning resources
 
-```

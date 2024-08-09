@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from src.data.load_data import prepare_data
 
 
-def train_model(X, y, feature_names, popular_songs):
+def train_model(X, y, feature_names, popular_songs) -> str:
     mlflow.set_tracking_uri(config['mlflow_tracking_uri'])
     mlflow.set_experiment("million_song_popularity_prediction")
     # Train the model
