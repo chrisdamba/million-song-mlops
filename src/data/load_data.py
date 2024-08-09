@@ -1,15 +1,13 @@
 import json
 import os
 from io import BytesIO
-from typing import Tuple, List, Any
+from typing import Any
 
 import boto3
 import h5py
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-from pandas import Series, DataFrame
-from pandas.core.generic import NDFrame
 
 
 def extract_song_data(h5_file):

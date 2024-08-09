@@ -18,7 +18,7 @@ def load_data_from_s3(*args, **kwargs):
     with open('config.json', 'r') as f:
         config = json.load(f)
 
-    X, y, feature_names, popular_songs = prepare_data(config['s3_bucket_name'], config['prepared_data_key'])
+    X, y, feature_names, popular_songs = prepare_data(config['s3_bucket_name'])
     return X, y, feature_names, popular_songs
 
 
