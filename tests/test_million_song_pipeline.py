@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from src.mage_ai_pipelines.million_song_pipeline import load_data_from_s3, train_and_evaluate_model, generate_recommendations, \
-    save_recommendations
+from src.mage_ai_pipelines.million_song_pipeline import load_data_from_s3, train_and_evaluate_model, \
+    save_recommendations, generate_recommendations
 
 
 @pytest.fixture

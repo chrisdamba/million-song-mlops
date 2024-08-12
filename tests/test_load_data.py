@@ -84,7 +84,9 @@ def test_prepare_data(mock_boto3, mock_engineer, mock_clean, mock_load, sample_d
     mock_engineer.return_value = sample_df
 
     with patch('builtins.open', create=True) as mock_open:
-        mock_open.return_value.__enter__.return_value.read.return_value = '{"raw_data_key": "mock_key", "s3_bucket_name": "mock_bucket", "prepared_data_key": "mock_prepared_key"}'
+        mock_open.return_value.__enter__.return_value.read.return_value = ('{"raw_data_key": "mock_key", '
+                                                                           '"s3_bucket_name": "mock_bucket", '
+                                                                           '"prepared_data_key": "mock_prepared_key"}')
         X, y, feature_names, popular_songs = prepare_data()
 
     assert isinstance(X, pd.DataFrame)
