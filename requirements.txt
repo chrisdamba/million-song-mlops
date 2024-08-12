@@ -11,3 +11,4 @@ h5py~=3.11.0
 pytest~=8.1.1
 PyYAML>=5.1,<7
 flake8~=6.0.0
+sagemaker
